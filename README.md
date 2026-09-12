@@ -89,9 +89,6 @@ The XFeed is currently a frontend-only experience. It provides an additional X-i
 
 ## Project Structure
 
-
-## Project Structure
-
 ```text
 onespace-v1/
 ├── backend/
