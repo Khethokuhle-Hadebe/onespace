@@ -89,32 +89,42 @@ The XFeed is currently a frontend-only experience. It provides an additional X-i
 
 ## Project Structure
 
+
+## Project Structure
+
 ```text
 onespace-v1/
-
 ├── backend/
 │   ├── middleware/
+│   ├── models/
 │   ├── routes/
 │   ├── uploads/
-│   ├── db.js
-│   ├── server.js
-│   └── package.json
-│
+│   ├── .env
+│   ├── package.json
+│   └── server.js
 ├── public/
 │   └── default-avatar.png
-│
+├── screenshots/
+│   ├── Screenshot-login.png
+│   ├── Screenshot-OneSpace-Home-image&text.png
+│   ├── Screenshot-OneSpace-Home-Text.png
+│   ├── Screenshot-Profile.png
+│   └── Screenshot-XFeed.png
 ├── src/
-│   ├── assets/
 │   ├── components/
 │   ├── pages/
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-│
+│   ├── assets/
+│   └── ...
+├── StatusBar.jsx
 ├── .gitignore
+├── index.html
 ├── package.json
 ├── package-lock.json
+├── postcss.config.js
+├── tailwind.config.js
+├── vite.config.js
 └── README.md
+```
 
 ## Screenshots
 
