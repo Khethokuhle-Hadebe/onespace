@@ -1,16 +1,149 @@
-# React + Vite
+# OneSpace
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+OneSpace is a full-stack social media web application designed around the idea of bringing multiple social-media-style experiences into one application.
 
-Currently, two official plugins are available:
+Instead of users having to leave one app and open another to experience different social platforms, OneSpace provides a single space where users can interact with different feed experiences while keeping core social features such as posting, commenting, liking, sharing, and profile management in one application.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The project was built to demonstrate practical full-stack web development skills, including React frontend development, REST APIs, authentication, database integration, file uploads, and responsive user interface design.
 
-## React Compiler
+## The Problem
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Social media users often move between different applications to access different social experiences. One application may be focused on one type of content or interaction, while another provides a different experience.
 
-## Expanding the ESLint configuration
+This means users have to leave one application and open another whenever they want to switch between different social-media experiences.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+OneSpace was created to explore a different approach: **what if different social-media-style experiences could be accessed from one application and one central space?**
+
+## The Solution
+
+OneSpace provides a single application where users can access different social-media-style feed experiences without leaving the app.
+
+The application combines a main OneSpace social feed with an X-inspired feed experience, while providing shared functionality such as authentication, posting, image uploads, comments, likes, shares, profile management, stories/status, notifications, and settings.
+
+The goal is to create a unified social-media experience where users can move between different types of social content while remaining inside the same application.
+
+## How It Works
+
+1. Users create an account or log in.
+2. Authentication protects the application's private areas.
+3. Users can create text or image posts.
+4. Posts are sent to the Express.js backend and stored in MongoDB.
+5. Users can like, comment on, and share posts.
+6. Users can manage their profile information and profile picture.
+7. Users can create account-specific stories/status updates.
+8. Users can switch between the OneSpace feed and the X-inspired feed experience.
+9. The React frontend communicates with the backend API to retrieve and update user and post data.
+
+The OneSpace Home feed is the primary full-stack experience. It is connected to the Express.js backend and MongoDB, allowing authenticated users to create and interact with persistent content.
+
+The XFeed is currently a frontend-only experience. It provides an additional X-inspired social-media-style interface within the OneSpace application and demonstrates how multiple feed experiences can exist within the same application.
+
+## Features
+
+- User registration and login
+- JWT-based authentication
+- Protected application routes
+- Create text and image posts
+- Image uploads
+- Persistent posts stored in MongoDB
+- Like and unlike posts
+- Comment on posts
+- Persistent comments
+- Share posts
+- Account-specific profiles
+- Edit profile information
+- Username uniqueness validation
+- Profile picture uploads
+- Account-specific stories/status
+- Instagram-inspired OneSpace feed
+- X-inspired feed experience
+- Notifications interface
+- Settings interface
+- Responsive navigation
+- Persistent user sessions
+- Default avatar fallback for accounts without profile pictures
+
+## Tech Stack
+
+### Frontend
+
+- React
+- Vite
+- JavaScript
+- JSX
+- Tailwind CSS
+- Framer Motion
+- React Icons
+
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JSON Web Tokens (JWT)
+- bcrypt
+- Multer
+- CORS
+- dotenv
+
+## Project Structure
+
+```text
+onespace-v1/
+
+├── backend/
+│   ├── middleware/
+│   ├── routes/
+│   ├── uploads/
+│   ├── db.js
+│   ├── server.js
+│   └── package.json
+│
+├── public/
+│   └── default-avatar.png
+│
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── pages/
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+│
+├── .gitignore
+├── package.json
+├── package-lock.json
+└── README.md
+
+## Screenshots
+
+### Authentication
+
+The OneSpace login page provides the entry point for authenticated users.
+
+![OneSpace Login](./screenshots/Screenshot-login.png)
+
+### OneSpace Home — Image Post
+
+The main OneSpace Home feed is the primary full-stack experience, with persistent posts, image uploads, and social interactions.
+
+![OneSpace Home with Image and Text Post](./screenshots/Screenshot-OneSpace-Home-image&text.png)
+
+### OneSpace Home — Text Post
+
+OneSpace also supports text-only posts with likes, comments, and sharing.
+
+![OneSpace Home with Text Post](./screenshots/Screenshot-OneSpace-Home-Text.png)
+
+### XFeed
+
+XFeed provides an additional X-inspired social-media-style experience within the OneSpace application. It is currently implemented as a frontend-only experience.
+
+![OneSpace XFeed](./screenshots/Screenshot-XFeed.png)
+
+### Profile
+
+The profile experience allows users to manage their account information and profile.
+
+![OneSpace Profile](./screenshots/Screenshot-Profile.png)
