@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 
 import { cn } from "../lib/utils";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const DEFAULT_AVATAR = "/default-avatar.png";
 
 const NAV = [
@@ -29,7 +31,7 @@ const NAV = [
 
     if (!token) return;
 
-    fetch("http://localhost:5000/api/auth/me", {
+    fetch(`${API_URL}/api/auth/me`, {
       headers: {
         Authorization: token,
       },
@@ -115,7 +117,7 @@ const NAV = [
             <img
   src={
     currentUser?.profilePicture
-      ? `http://localhost:5000${currentUser.profilePicture}`
+      ? `${API_URL}${currentUser.profilePicture}`
       : DEFAULT_AVATAR
   }
   alt={currentUser?.username || "profile"}

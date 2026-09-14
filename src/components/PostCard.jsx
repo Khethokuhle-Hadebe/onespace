@@ -10,6 +10,8 @@ import { useToast } from "../hooks/use-toast";
 
 import { EMOJIS, ME } from "../lib/mockData";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function PostCard({
   post,
   onLike,
@@ -31,7 +33,7 @@ useEffect(() => {
 
   if (!token) return;
 
-  fetch("http://localhost:5000/api/auth/me", {
+  fetch(`${API_URL}/api/auth/me`, {
     headers: {
       Authorization: token,
     },
@@ -87,7 +89,7 @@ useEffect(() => {
             <img
               src={
   post.user?.avatar?.startsWith("/uploads/")
-    ? `http://localhost:5000${post.user.avatar}`
+    ? `${API_URL}${post.user.avatar}`
     : post.user?.avatar || "/default-avatar.png"
 }
                 alt={post.user.name}
@@ -191,7 +193,7 @@ useEffect(() => {
                       <img
                         src={
                          c.user.avatar?.startsWith("/uploads/")
-                          ? `http://localhost:5000${c.user.avatar}`
+                          ? `${API_URL}${c.user.avatar}`
                           : c.user.avatar || "/default-avatar.png"
                       }
                             alt=""
@@ -221,7 +223,7 @@ useEffect(() => {
                 <img
                   src={
                     currentUser?.profilePicture
-                    ? `http://localhost:5000${currentUser.profilePicture}`
+                    ? `${API_URL}${currentUser.profilePicture}`
                     : "/default-avatar.png"
                  }
                      alt={currentUser?.username || "me"}

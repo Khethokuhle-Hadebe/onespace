@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ME, EMOJIS } from "../lib/mockData";
 import { cn } from "../lib/utils";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function CreatePost({ onPost, placeholder = "What's happening in your world?",
    platform = "onespace" }) {
 
@@ -42,7 +44,7 @@ useEffect(() => {
 
      
 
-      const response = await fetch("http://localhost:5000/api/auth/me", {
+      const response = await fetch(`${API_URL}/api/auth/me`, {
        headers: {
        Authorization: token,
      },
@@ -109,7 +111,7 @@ useEffect(() => {
         <img
   src={
     currentUser?.profilePicture
-  ? `http://localhost:5000${currentUser.profilePicture}`
+  ? `${API_URL}${currentUser.profilePicture}`
   : "/default-avatar.png"
   }
   alt={currentUser?.username || "me"}

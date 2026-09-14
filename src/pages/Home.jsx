@@ -12,6 +12,8 @@ import MrDlaminiAvatar from "../assets/avatars/Mr Dlamini.jpg";
 import SindiAvatar from "../assets/avatars/Sindi.jpg";
 import ZamaAvatar from "../assets/avatars/Zama.jpg";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const STORIES = [
   { name: "Zilethiwe", avatar: ZilethiweAvatar },
   { name: "Meeka", avatar: MeekaAvatar },
@@ -49,7 +51,7 @@ useEffect(() => {
     try {
      const token = localStorage.getItem("onespace-token");
 
-const response = await fetch("http://localhost:5000/api/posts", {
+const response = await fetch(`${API_URL}/api/posts`, {
   headers: {
     Authorization: token,
   },
@@ -73,8 +75,8 @@ const response = await fetch("http://localhost:5000/api/posts", {
         content: post.content,
 
         image: post.image
-        ? `http://localhost:5000${post.image}`
-        : null,
+          ? `${API_URL}${post.image}`
+          : null,
 
        likes: post.likes || 0,
        comments: (post.comments || []).map((comment, index) => ({
@@ -128,7 +130,7 @@ if (newPost.imageFile) {
   formData.append("image", newPost.imageFile);
 }
 
-const response = await fetch("http://localhost:5000/api/posts", {
+const response = await fetch(`${API_URL}/api/posts`, {
   method: "POST",
   headers: {
     Authorization: token,
@@ -153,7 +155,7 @@ const response = await fetch("http://localhost:5000/api/posts", {
       },
       content: data.post.content,
       image: data.post.image
-      ? `http://localhost:5000${data.post.image}`
+      ? `${API_URL}${data.post.image}`
       : null,
       likes: data.post.likes || 0,
       comments: [],
@@ -180,7 +182,7 @@ const response = await fetch("http://localhost:5000/api/posts", {
     }
 
     const response = await fetch(
-      `http://localhost:5000/api/posts/${id}/like`,
+      `${API_URL}/api/posts/${id}/like`,
       {
         method: "PATCH",
         headers: {
@@ -222,7 +224,7 @@ const response = await fetch("http://localhost:5000/api/posts", {
     }
 
     const response = await fetch(
-      `http://localhost:5000/api/posts/${id}/comments`,
+      `${API_URL}/api/posts/${id}/comments`,
       {
         method: "POST",
         headers: {
@@ -277,7 +279,7 @@ const response = await fetch("http://localhost:5000/api/posts", {
       return;
     }
 
-    const response = await fetch(`http://localhost:5000/api/posts/${id}/share`, {
+    const response = await fetch(`${API_URL}/api/posts/${id}/share`, {
       method: "PATCH",
       headers: {
         Authorization: token,

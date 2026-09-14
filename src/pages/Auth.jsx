@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Globe, Mail, Lock, User, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Auth() {
   const navigate = useNavigate();
 
@@ -24,8 +26,8 @@ export default function Auth() {
     try {
       const endpoint =
         mode === "login"
-          ? "http://localhost:5000/api/auth/login"
-          : "http://localhost:5000/api/auth/register";
+          ? `${API_URL}/api/auth/login`
+          : `${API_URL}/api/auth/register`;
 
       const body =
         mode === "login"

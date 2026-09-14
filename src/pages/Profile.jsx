@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { MapPin, Link2, Calendar } from "lucide-react";
 import MobileNav from "../components/MobileNav";
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const COVER = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=300&fit=crop";
 
@@ -26,7 +27,7 @@ export default function Profile() {
 
   if (!token) return;
 
-  fetch("http://localhost:5000/api/auth/me", {
+  fetch(`${API_URL}/api/auth/me`, {
     headers: {
       Authorization: token,
     },
@@ -68,7 +69,7 @@ export default function Profile() {
                   <img
                     src={
                     profilePicture
-                    ? `http://localhost:5000${profilePicture}`
+                    ? `${API_URL}${profilePicture}`
                     : "/default-avatar.png"
                   }
                     alt="me"
@@ -148,7 +149,7 @@ export default function Profile() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/profile",
+        `${API_URL}/api/auth/profile`,
         {
           method: "PATCH",
           headers: {
@@ -179,7 +180,7 @@ export default function Profile() {
         formData.append("profilePicture", profilePicture);
 
         const pictureResponse = await fetch(
-          "http://localhost:5000/api/profile/picture",
+          `${API_URL}/api/profile/picture`,
           {
             method: "PATCH",
             headers: {
