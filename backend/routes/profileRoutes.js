@@ -1,23 +1,13 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
+const cloudinary = require("../config/cloudinary");
 
 const authMiddleware = require("../middleware/authMiddleware");
 const User = require("../models/User");
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads"));
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${file.originalname}`;
-    cb(null, uniqueName);
-  },
-});
-
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.patch(
   "/picture",
@@ -41,14 +31,31 @@ router.patch(
         });
       }
 
-      user.profilePicture = `/uploads/${req.file.filename}`;
+      const result = await new Promise((resolve, reject) => {
+  const stream = cloudinary.uploader.upload_stream(
+    {
+      folder: "onespace/profile-pictures",
+      resource_type: "image",
+    },
+    (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    }
+  );
 
-      await user.save();
+  stream.end(req.file.buffer);
+});
 
-      res.json({
-        success: true,
-        profilePicture: user.profilePicture,
-      });
+user.profilePicture = result.secure_url;
+await user.save();
+
+res.json({
+  success: true,
+  profilePicture: user.profilePicture,
+});
     } catch (error) {
       console.error("Profile picture upload error:", error);
 

@@ -1,24 +1,12 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
-
 const Post = require("../models/Post");
-
+const cloudinary = require("../config/cloudinary");
 const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
-    cb(null, uniqueName);
-  },
-});
-
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Create a post
 router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
@@ -26,17 +14,42 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
     const { content } = req.body;
 
     if (!content?.trim() && !req.file) {
-  return res.status(400).json({
-    success: false,
-    message: "Post cannot be empty",
-  });
-}
+      return res.status(400).json({
+        success: false,
+        message: "Post cannot be empty",
+      });
+    }
+
+    let imageUrl = null;
+
+    if (req.file) {
+      const result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: "onespace/posts",
+            resource_type: "image",
+          },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+
+        stream.end(req.file.buffer);
+      });
+
+      imageUrl = result.secure_url;
+    }
 
     const post = await Post.create({
-  user: req.user.userId,
-  content: content?.trim() || "",
-  image: req.file ? `/uploads/${req.file.filename}` : null,
-});
+      user: req.user.userId,
+      content: content?.trim() || "",
+      image: imageUrl,
+    });
+
     await post.populate("user", "username displayName profilePicture");
 
     res.status(201).json({
@@ -44,6 +57,8 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
       post,
     });
   } catch (error) {
+    console.error("Post creation error:", error);
+
     res.status(500).json({
       success: false,
       message: error.message,
@@ -103,6 +118,7 @@ router.patch("/:id/like", authMiddleware, async (req, res) => {
       post.likedBy = post.likedBy.filter(
         (id) => id.toString() !== userId.toString()
       );
+
       post.likes = Math.max(0, post.likes - 1);
     } else {
       post.likedBy.push(userId);
@@ -153,6 +169,7 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
     await post.save();
 
     await post.populate("comments.user", "username profilePicture");
+
     res.json({
       success: true,
       comments: post.comments,
@@ -178,6 +195,7 @@ router.patch("/:id/share", authMiddleware, async (req, res) => {
     }
 
     post.shares += 1;
+
     await post.save();
 
     res.json({
@@ -193,4 +211,3 @@ router.patch("/:id/share", authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
-
