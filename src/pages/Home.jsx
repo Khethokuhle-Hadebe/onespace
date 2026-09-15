@@ -74,8 +74,10 @@ const response = await fetch(`${API_URL}/api/posts`, {
         },
         content: post.content,
 
-        image: post.image
-          ? `${API_URL}${post.image}`
+                image: post.image
+          ? post.image.startsWith("http")
+            ? post.image
+            : `${API_URL}${post.image}`
           : null,
 
        likes: post.likes || 0,
@@ -154,9 +156,11 @@ const response = await fetch(`${API_URL}/api/posts`, {
         avatar: data.post.user?.profilePicture || "/default-avatar.png",
       },
       content: data.post.content,
-      image: data.post.image
-      ? `${API_URL}${data.post.image}`
-      : null,
+            image: data.post.image
+        ? data.post.image.startsWith("http")
+          ? data.post.image
+          : `${API_URL}${data.post.image}`
+        : null,
       likes: data.post.likes || 0,
       comments: [],
       shares: data.post.shares || 0,

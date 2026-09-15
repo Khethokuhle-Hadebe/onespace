@@ -110,10 +110,12 @@ useEffect(() => {
       <div className="flex gap-3 p-4">
         <img
   src={
-    currentUser?.profilePicture
-  ? `${API_URL}${currentUser.profilePicture}`
-  : "/default-avatar.png"
-  }
+  currentUser?.profilePicture
+    ? currentUser.profilePicture.startsWith("http")
+      ? currentUser.profilePicture
+      : `${API_URL}${currentUser.profilePicture}`
+    : "/default-avatar.png"
+}
   alt={currentUser?.username || "me"}
   className={`h-10 w-10 rounded-full border-2 object-cover shrink-0 ${
     platform === "x" ? "border-green-500/40" : "border-pink/40"

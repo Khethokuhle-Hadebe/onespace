@@ -116,10 +116,12 @@ const NAV = [
           <div className="flex items-center gap-3">
             <img
   src={
-    currentUser?.profilePicture
-      ? `${API_URL}${currentUser.profilePicture}`
-      : DEFAULT_AVATAR
-  }
+  currentUser?.profilePicture
+    ? currentUser.profilePicture.startsWith("http")
+      ? currentUser.profilePicture
+      : `${API_URL}${currentUser.profilePicture}`
+    : DEFAULT_AVATAR
+}
   alt={currentUser?.username || "profile"}
   className="h-9 w-9 rounded-full border-2 border-pink/50 object-cover"
 />

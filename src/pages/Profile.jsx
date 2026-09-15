@@ -16,6 +16,7 @@ export default function Profile() {
   const [username, setUsername] = useState("@ZilethiweHadebe");
   const [bio, setBio] = useState(DEFAULT_BIO);
   const [profilePicture, setProfilePicture] = useState("");
+  const [profilePreview, setProfilePreview] = useState("");
 
   const [draftName, setDraftName] = useState("");
   const [draftUsername, setDraftUsername] = useState("");
@@ -68,10 +69,14 @@ export default function Profile() {
                 <div className="rounded-full p-1 bg-background">
                   <img
                     src={
-                    profilePicture
-                    ? `${API_URL}${profilePicture}`
-                    : "/default-avatar.png"
-                  }
+  profilePreview
+    ? profilePreview
+    : profilePicture
+      ? typeof profilePicture === "string" && profilePicture.startsWith("http")
+        ? profilePicture
+        : `${API_URL}${profilePicture}`
+      : "/default-avatar.png"
+}
                     alt="me"
                     className="h-20 w-20 rounded-full object-cover"
                   />
@@ -107,12 +112,13 @@ export default function Profile() {
     type="file"
     accept="image/*"
     onChange={(e) => {
-      const file = e.target.files?.[0];
+  const file = e.target.files?.[0];
 
-      if (file) {
-        setProfilePicture(file);
-      }
-    }}
+  if (file) {
+    setProfilePicture(file);
+    setProfilePreview(URL.createObjectURL(file));
+  }
+}}
     className="w-full rounded-lg border border-pink/30 bg-background p-2"
   />
 </div>   
